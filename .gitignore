@@ -1,0 +1,20 @@
+# ambiente virtual
+venv/
+.venv/
+env/
+
+# cache do Python
+__pycache__/
+*.pyc
+
+# cache do pytest
+.pytest_cache/
+
+# screenshots gerados automaticamente pelos testes que falharam
+screenshots/
+
+# arquivos de IDE
+.vscode/
+.idea/
+
+# variáveis de ambiente
