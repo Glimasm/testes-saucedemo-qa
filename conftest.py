@@ -2,6 +2,7 @@ from selenium import webdriver
 import pytest
 import os
 from datetime import datetime
+from pages.login_page import LoginPage
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -26,3 +27,10 @@ def driver():
     yield d
 
     d.quit()
+
+@pytest.fixture
+def usuario_logado(driver):
+    login_page = LoginPage(driver)
+    login_page.realizar_login("standard_user", "secret_sauce")
+
+    return driver
