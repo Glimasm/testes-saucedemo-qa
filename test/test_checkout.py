@@ -1,7 +1,7 @@
 from pages.produtos_page import ProdutoPage
 from pages.carrinho_page import CarrinhoPage
 from pages.checkout_page import CheckoutPage
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 
 def test_sem_primeiro_nome_checkout(usuario_logado):
@@ -78,7 +78,15 @@ def test_comprar_produtos(usuario_logado):
 
     assert checkout.obter_subtotal() == subtotal_esperado
 
+    percentual_imposto = Decimal("0.08")
+    imposto_esperado = (
+        subtotal_esperado * percentual_imposto
+    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
     imposto_exibido = checkout.obter_taxa()
+
+    assert imposto_exibido == imposto_esperado
+
     total_esperado = subtotal_esperado + imposto_exibido
 
     assert checkout.obter_total() == total_esperado
