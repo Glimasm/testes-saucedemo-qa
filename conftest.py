@@ -30,6 +30,11 @@ def driver():
     "profile.password_manager_leak_detection": False
     })
 
+    if os.getenv("CI"):
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+
     d = webdriver.Chrome(options=options)
 
     yield d
