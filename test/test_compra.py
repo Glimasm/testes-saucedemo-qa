@@ -36,6 +36,7 @@ def test_remover_produto_do_carrinho(usuario_logado):
     ]
 
     assert carrinho.numero_contador() == len(nomes_esperado)
+    assert carrinho.obter_nome_produto() == nomes_esperado
 
 def test_carrinho_vazio(usuario_logado):
     
