@@ -1,9 +1,11 @@
-# Testes de Login e Carrinho — SauceDemo
+# Testes de Login, Carrinho e Checkout — SauceDemo
 
 Suíte de testes automatizados em Python, cobrindo o fluxo de login do site
 de prática [saucedemo.com](https://www.saucedemo.com) com caminho cujo login está correto e
 caminho do login errado, além da adição e conferência de produtos no carrinho,
 seguindo o padrão Page Object Model.
+Também cobre o checkout, com validação dos campos obrigatórios, preços, subtotal,
+imposto e confirmação da compra.
 
 ## Stack
 
@@ -42,17 +44,20 @@ pytest
 
 - Login com credenciais válidas → redireciona para a página de inventário
 - Login com credenciais inválidas → permanece na tela de login
+  e confere a mensagem de erro para usuário e senha incompatíveis
 - Adição de produtos ao carrinho → o teste `test_adicionar_multiplos_produtos_ao_carrinho` adiciona
   Sauce Labs Backpack e Sauce Labs Bike Light, abre o carrinho e compara os
   nomes exibidos com a lista esperada, independentemente da ordem
 - Remoção de produto → verifica que o contador do carrinho passa de dois itens para um
+  e confirma que o produto restante é Sauce Labs Bike Light
 - Esvaziamento do carrinho → verifica que o contador retorna zero após remover todos os produtos
 - Campos obrigatórios do checkout → confere as mensagens de erro para primeiro nome,
   sobrenome e código postal vazios, em cenários separados
 - Produtos e preços → compara os nomes e preços do carrinho com os valores esperados
 - Subtotal → compara o valor exibido no checkout com a soma dos preços esperados usando `Decimal`
-- Total → verifica se corresponde ao subtotal mais o imposto exibido,
-  sem validar de forma independente a regra de cálculo do imposto
+- Total → verifica se corresponde ao subtotal mais o imposto exibido.
+- Imposto → compara o valor exibido com 8% do subtotal esperado, usando a regra
+  adotada no teste e arredondamento para centavos com `ROUND_HALF_UP`
 - Finalização da compra → verifica a mensagem de confirmação após finalizar o checkout
 - Compra com carrinho vazio → documenta que a aplicação permite finalizar uma compra sem produtos
 - Screenshot automático salvo em screenshots/ sempre que um teste falha,
@@ -79,11 +84,15 @@ pytest
   `float`, evitando imprecisões de representação binária nos cálculos monetários.
 - **Valores esperados definidos no teste**: os nomes e preços esperados são
   declarados na massa de teste, e o subtotal esperado é calculado a partir dela.
-  O total é comparado com esse subtotal mais o imposto exibido; a regra de cálculo
-  do imposto não é validada de forma independente.
+  O total é comparado com esse subtotal mais o imposto exibido.
+  Um assert anterior compara o imposto exibido com o cálculo de 8% sobre o subtotal
+  esperado. Esse cálculo usa `quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`
+  para aplicar a regra de arredondamento adotada no teste.
 - **Cenários separados**: cada campo obrigatório vazio tem seu próprio teste.
   A compra com produtos e a compra com carrinho vazio também são cenários distintos;
   o segundo registra o comportamento atual de permitir a finalização sem itens.
 - **Preparação com fixtures**: `driver` cria uma sessão do Chrome para cada teste
   e a encerra após a execução. `usuario_logado` reutiliza essa fixture para preparar
   a autenticação dos cenários.
+  Os testes de login usam diretamente `driver`, enquanto os testes de carrinho
+  e checkout usam `usuario_logado`.
