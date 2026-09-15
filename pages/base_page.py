@@ -1,5 +1,6 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 
 
 class BasePage():
@@ -24,6 +25,11 @@ class BasePage():
 
     def obter_texto(self, locator: tuple) -> str:
         return self.encontrar_elemento(locator).text
+
+    def obter_mensagem_erro(self):
+        return self.obter_texto(
+            (By.CSS_SELECTOR, "[data-test='error']")
+        )
 
     def obter_url_atual(self):
         return self.driver.current_url

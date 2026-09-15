@@ -60,7 +60,7 @@ def test_comprar_produtos(usuario_logado):
     carrinho = CarrinhoPage(usuario_logado)
     carrinho.abrir_carrinho()
 
-    produtos_encontrados = carrinho.obter_produtos_com_preços()
+    produtos_encontrados = carrinho.obter_produtos_com_precos()
 
 
     assert sorted(produtos_encontrados, key=lambda p: p["nome"]) == sorted(

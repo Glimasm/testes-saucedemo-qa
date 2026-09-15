@@ -11,4 +11,4 @@ def test_login_invalido(driver):
     login_page = LoginPage(driver)
     login_page.realizar_login("standard_user", "secretsauce")
 
-    assert login_page.obter_mensagem_login_erro() == "Epic sadface: Username and password do not match any user in this service"
+    assert login_page.obter_mensagem_erro() == "Epic sadface: Username and password do not match any user in this service"

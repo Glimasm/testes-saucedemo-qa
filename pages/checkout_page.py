@@ -40,11 +40,6 @@ class CheckoutPage(BasePage):
     def finalizar_checkout(self):
         self.clicar((By.ID, "finish"))
 
-    def obter_mensagem_erro(self):
-        return self.obter_texto(
-            (By.CSS_SELECTOR, "[data-test='error']")
-        )
-    
     def obter_mensagem_compra(self):
         return self.obter_texto(
             (By.CSS_SELECTOR, "[data-test='complete-header']")

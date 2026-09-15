@@ -18,8 +18,3 @@ class LoginPage(BasePage):
         self.escrever(self.campo_usuario, usuario)
         self.escrever(self.campo_senha, senha)
         self.clicar(self.botao_login)
-
-    def obter_mensagem_login_erro(self):
-        return self.obter_texto(
-            (By.CSS_SELECTOR, "[data-test='error']")
-        )

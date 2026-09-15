@@ -19,7 +19,7 @@ class CarrinhoPage(BasePage):
         )
         return [elemento.text for elemento in elementos]
 
-    def obter_produtos_com_preços(self):
+    def obter_produtos_com_precos(self):
         elementos = self.wait.until(
             EC.visibility_of_all_elements_located(
                 (By.CSS_SELECTOR, ".cart_item")
